@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha Solver</title>
+</head>
+<body>
+    <h1>Captcha Solver</h1>
+    <img src="{{ captcha_url }}" alt="Captcha Image" />
+    <form action="/solve" method="post">
+        <input type="hidden" name="captcha_url" value="{{ captcha_url }}">
+        <button type="submit">Solve Captcha</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        const form = document.querySelector('form');
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(form))
+            });
+            const result = await response.text();
+            document.getElementById('result').innerText = 'Solved Text: ' + result;
+        };
+    </script>
+</body>
+</html>
